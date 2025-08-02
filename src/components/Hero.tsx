@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { ArrowRight, Play } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { ArrowRight, Play } from 'lucide-react';
 
 interface HeroProps {
   onViewDemos: () => void;
+  onContactClick: () => void;
 }
 
-const Hero: React.FC<HeroProps> = ({ onViewDemos }) => {
+const Hero: React.FC<HeroProps> = ({ onViewDemos, onContactClick }) => {
   const [typedText, setTypedText] = useState('');
   const fullText = 'Launch, Optimize & Scale Instantly';
 
@@ -47,24 +48,18 @@ const Hero: React.FC<HeroProps> = ({ onViewDemos }) => {
         </motion.div>
         
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          className="mb-12"
+          className="mb-8"
         >
-          <h2 className="text-2xl md:text-4xl text-gray-700 font-light mb-4 h-12">
+          <p className="text-xl md:text-2xl text-gray-600 mb-4 font-light">
             {typedText}
-            <motion.span
-              animate={{ opacity: [1, 0] }}
-              transition={{ duration: 0.8, repeat: Infinity }}
-              className="text-orange-500"
-            >
-              |
-            </motion.span>
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
-            Transform your digital presence with cutting-edge AI technology. 
-            From concept to conversion in record time.
+            <span className="animate-pulse">|</span>
+          </p>
+          <p className="text-lg text-gray-500 max-w-2xl mx-auto font-light">
+            Transform your business with sleek, AI-powered websites that convert. 
+            Same-day delivery, mobile-first design, and unbeatable pricing.
           </p>
         </motion.div>
 
@@ -75,7 +70,7 @@ const Hero: React.FC<HeroProps> = ({ onViewDemos }) => {
           className="flex flex-col sm:flex-row gap-6 justify-center items-center"
         >
           <motion.button
-            onClick={() => window.location.href = '/contact'}
+            onClick={onContactClick}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className="bg-orange-500 text-white px-8 py-4 font-medium text-lg hover:bg-white hover:text-orange-500 hover:border-orange-500 border-2 border-orange-500 transition-all duration-300 flex items-center gap-3 shadow-lg"

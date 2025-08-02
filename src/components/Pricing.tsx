@@ -2,9 +2,13 @@ import React from 'react';
 import { Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const Pricing: React.FC = () => {
+interface PricingProps {
+  onContactClick: () => void;
+}
+
+const Pricing: React.FC<PricingProps> = ({ onContactClick }) => {
   return (
-    <section id="pricing" className="py-24 bg-white">
+    <section id="pricing" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -87,16 +91,16 @@ const Pricing: React.FC = () => {
               <p className="text-sm text-gray-600">
                 <strong>Support Email:</strong>{' '}
                 <a 
-                                      href="mailto:support@turbobytes.in" 
+                  href="mailto:support@turbobytes.in" 
                   className="text-orange-600 hover:text-orange-800"
                 >
-                                      support@turbobytes.in
+                  support@turbobytes.in
                 </a>
               </p>
             </div>
 
             <motion.button
-              onClick={() => window.location.href = '/contact'}
+              onClick={onContactClick}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="w-full bg-orange-500 text-white py-4 px-6 rounded-lg font-semibold hover:bg-orange-600 transition-all duration-300 shadow-lg"

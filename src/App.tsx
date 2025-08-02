@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
@@ -20,6 +20,7 @@ import ContactPage from './components/ContactPage';
 
 function MainSite() {
   const [isLoading, setIsLoading] = useState(true);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   useEffect(() => {
     // Smooth scroll setup
@@ -42,6 +43,9 @@ function MainSite() {
   };
 
   const handleViewDemos = () => scrollToSection('portfolio');
+
+  const openContactModal = () => setIsContactModalOpen(true);
+  const closeContactModal = () => setIsContactModalOpen(false);
 
   if (isLoading) {
     return (
@@ -83,11 +87,11 @@ function MainSite() {
       className="min-h-screen bg-white overflow-x-hidden"
     >
       {/* Navigation */}
-      <Navbar />
+      <Navbar onContactClick={openContactModal} />
 
       {/* Hero Section */}
       <section id="home">
-        <Hero onViewDemos={handleViewDemos} />
+        <Hero onViewDemos={handleViewDemos} onContactClick={openContactModal} />
       </section>
 
       {/* Services Section */}
@@ -97,21 +101,28 @@ function MainSite() {
       <Portfolio />
 
       {/* Pricing Section */}
-      <Pricing />
+      <Pricing onContactClick={openContactModal} />
 
       {/* Testimonials Section */}
       <Testimonials />
 
       {/* Footer */}
       <section id="contact">
-        <Footer />
+        <Footer onContactClick={openContactModal} />
       </section>
 
       {/* Sticky Contact Button */}
-      <StickyContact />
+      <StickyContact onContactClick={openContactModal} />
 
       {/* Cookie Banner */}
       <CookieBanner />
+
+      {/* Contact Modal */}
+      <AnimatePresence>
+        {isContactModalOpen && (
+          <ContactPage isOpen={isContactModalOpen} onClose={closeContactModal} />
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
@@ -126,7 +137,6 @@ function App() {
       <Route path="/disclaimer" element={<Disclaimer />} />
       <Route path="/shipping-policy" element={<ShippingPolicy />} />
       <Route path="/refund-cancellation-policy" element={<RefundCancellationPolicy />} />
-      <Route path="/contact" element={<ContactPage />} />
     </Routes>
   );
 }

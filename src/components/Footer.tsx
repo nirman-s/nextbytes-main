@@ -2,7 +2,11 @@ import React from 'react';
 import { Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const Footer: React.FC = () => {
+interface FooterProps {
+  onContactClick?: () => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ onContactClick }) => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -56,7 +60,7 @@ const Footer: React.FC = () => {
                 </motion.button>
               ))}
               <button
-                onClick={() => scrollToSection('contact')}
+                onClick={onContactClick}
                 className="block text-gray-300 hover:text-orange-500 transition-all duration-300 text-left font-light"
               >
                 Contact

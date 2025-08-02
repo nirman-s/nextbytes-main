@@ -2,70 +2,54 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-interface NavbarProps {}
+interface NavbarProps {
+  onContactClick?: () => void;
+}
 
-const Navbar: React.FC<NavbarProps> = () => {
+const Navbar: React.FC<NavbarProps> = ({ onContactClick }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    const handleSectionDetection = () => {
-      const sections = ['home', 'services', 'portfolio', 'pricing'];
-      const scrollPosition = window.scrollY + 200; // Offset for better detection
-      
-      let currentSection = 'home';
-      
-      for (const sectionId of sections) {
-        const section = document.getElementById(sectionId);
-        if (section && section.offsetTop <= scrollPosition) {
-          currentSection = sectionId;
-        }
-      }
-      
-      setActiveSection(currentSection);
-    };
-
-    const scrollHandler = () => {
-      handleScroll();
-      requestAnimationFrame(handleSectionDetection);
-    };
-
-    window.addEventListener('scroll', scrollHandler, { passive: true });
-    
-    // Initial check on mount
-    handleScroll();
-    handleSectionDetection();
-    
-    return () => window.removeEventListener('scroll', scrollHandler);
-  }, []);
-
-  const scrollToSection = (sectionId: string) => {
-    if (sectionId === 'contact') {
-      // Redirect to contact page
-      window.location.href = '/contact';
-      return;
-    }
-    
-    setActiveSection(sectionId);
-    setIsMobileMenuOpen(false);
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   const navItems = [
     { id: 'home', label: 'Home' },
     { id: 'services', label: 'Services' },
     { id: 'portfolio', label: 'Portfolio' },
     { id: 'pricing', label: 'Pricing' },
-    { id: 'contact', label: 'Contact' }
+    { id: 'testimonials', label: 'Testimonials' }
   ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+      
+      // Update active section based on scroll position
+      const sections = navItems.map(item => item.id);
+      const current = sections.find(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
+        }
+        return false;
+      });
+      
+      if (current) {
+        setActiveSection(current);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [navItems]);
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <motion.nav
@@ -119,7 +103,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 
           {/* CTA Button */}
           <motion.button
-            onClick={() => window.location.href = '/contact'}
+            onClick={onContactClick}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className="hidden md:block bg-orange-500 text-white px-6 py-2 font-medium hover:bg-white hover:text-orange-500 hover:border-orange-500 border-2 border-orange-500 transition-all duration-300"
@@ -159,7 +143,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                 </motion.button>
               ))}
               <motion.button
-                onClick={() => window.location.href = '/contact'}
+                onClick={onContactClick}
                 whileHover={{ scale: 1.02 }}
                 className="w-full bg-orange-500 text-white py-3 font-medium mt-4 hover:bg-white hover:text-orange-500 hover:border-orange-500 border-2 border-orange-500 transition-all duration-300"
               >

@@ -13,7 +13,7 @@ const Testimonials: React.FC = () => {
   }, []);
 
   return (
-    <section className="py-24 bg-gray-900 diagonal-pattern">
+    <section id="testimonials" className="py-24 bg-gray-900 diagonal-pattern">
       <div className="max-w-5xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

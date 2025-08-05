@@ -55,7 +55,7 @@ const Pricing: React.FC<PricingProps> = ({ onContactClick }) => {
         'AI chatbot',
         'Custom APIs',
         'Advanced SEO',
-        '3 revisions',
+        '3 revisions per day',
         '60 days support',
         'Free hosting, backup, and domain',
         '1 day delivery'
